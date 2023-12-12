@@ -63,29 +63,51 @@ int		parse_arguments(int ac, char *av[], t_params *params,t_data *to_fill)
 	}
 	return false;
 }
+bool	init_locks(t_data *init)
+{
+	int i;
+	
+	init->threads = malloc(sizeof(pthread_t) * init->params->philos_num);
+	if (!init->threads)
+		return false;
+	init->philos = malloc(sizeof(t_philos) * init->params->philos_num);
+	if (!init->philos)
+		return (free(init->threads),false);
+	init->forks = malloc(sizeof(pthread_mutex_t) * init->params->philos_num);
+	if (!init->forks)
+		return (free(init->philos),free(init->threads),false);
+	init->control = malloc(sizeof(pthread_mutex_t) * init->params->philos_num);
+	if (!init->control)
+		return (free(init->forks), free(init->philos),free(init->threads),false);
+	i = 0;
+	while(i < init->params->philos_num)
+	{
+		if (pthread_mutex_init(&init->forks[i], NULL))
+			return false;
+		if (pthread_mutex_init(&init->control[i], NULL))
+			return false;
+		i++;
+	}
+	return true;
+}
 
 bool	initialize(t_data *init)
 {
 	int i;
 
 	i = -1;
-	init->threads = malloc(sizeof(pthread_t) * init->params->philos_num);
-	if (!init->threads)
-		return false;
-	init->philos = malloc(sizeof(t_philos) * init->params->philos_num);
-	if (!init->philos)
-		return false;
-	init->forks = malloc(sizeof(pthread_mutex_t) * init->params->philos_num);
-	if (!init->forks)
-		return false;
-	init->control = malloc(sizeof(pthread_mutex_t) * init->params->philos_num);
-	if (!init->control)
+	if (!init_locks(init))
 		return false;
 	while(++i < init->params->philos_num)
 	{
 		init->philos[i].id = i + 1;
-		init->philos[i].left_fork = &init->forks[i];
+		init->philos[i].right_fork = &init->forks[i];
 		init->philos[i].left_fork = &init->forks[(i + 1) % init->params->philos_num];
+		if (i % 2 == 0)
+		{
+			init->philos[i].right_fork = &init->forks[(i + 1) % init->params->philos_num];
+			init->philos[i].left_fork = &init->forks[i];
+		}
 		init->philos[i].pcontrol = &init->control[i];
 		init->philos[i].last_meal = 0;
 		init->philos[i].meal_times = 0;
