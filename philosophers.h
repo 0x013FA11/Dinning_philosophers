@@ -2,7 +2,7 @@
 #define PHILOSOPHERS_H
 
 #define THINK "\033[1;31m is thinking\033[0m"
-#define EAT "\033[1;31mis eating\033[0m"
+#define EAT "\033[2;80mis eating\033[0m"
 #define SLEEP "\033[1;31m is sleeping\033[0m"
 #define DEATH "\033[1;31m died\033[0m"
 #define SHOPSTICK "\033[1;31m has taken a fork\033[0m"
@@ -53,14 +53,15 @@ typedef struct s_data
 }t_data;
 
 /*routine*/
+void	*routine(void *ptr);
 
 /*time*/
 long long	get_time(void);
 
 /*control*/
+bool	philosophers_init(t_data *philosophers, void *(*routine)(void *));
 
 /*parsing*/
-bool	philosophers_init(t_data *philosophers, void (*routine)());
 int		parse_arguments(int ac, char *av[], t_params *params,t_data *to_fill);
 bool	initialize(t_data *init);
 void (*(*philosophers_actions())[4])(t_philos *philos);

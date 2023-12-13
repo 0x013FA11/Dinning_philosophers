@@ -103,7 +103,7 @@ bool	initialize(t_data *init)
 		init->philos[i].id = i + 1;
 		init->philos[i].right_fork = &init->forks[i];
 		init->philos[i].left_fork = &init->forks[(i + 1) % init->params->philos_num];
-		if (i % 2 == 0)
+		if (i % 2)
 		{
 			init->philos[i].right_fork = &init->forks[(i + 1) % init->params->philos_num];
 			init->philos[i].left_fork = &init->forks[i];
@@ -112,6 +112,7 @@ bool	initialize(t_data *init)
 		init->philos[i].last_meal = 0;
 		init->philos[i].meal_times = 0;
 		init->philos[i].params = init->params;
+		init->philos[i].state = true;
 	}
 	return true;
 }
