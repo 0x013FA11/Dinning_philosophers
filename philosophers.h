@@ -40,6 +40,7 @@ typedef struct s_philo
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t *pcontrol;
+	t_params *params;
 }t_philos;
 
 typedef struct s_data
@@ -62,5 +63,6 @@ long long	get_time(void);
 bool	philosophers_init(t_data *philosophers, void (*routine)());
 int		parse_arguments(int ac, char *av[], t_params *params,t_data *to_fill);
 bool	initialize(t_data *init);
+void (*(*philosophers_actions())[4])(t_philos *philos);
 
 #endif

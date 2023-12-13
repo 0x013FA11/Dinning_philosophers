@@ -24,7 +24,7 @@ int	ft_atoi(const char *str)
 	while (ft_isdigit(*str))
 	{
 		if (result > 2147483648 && sign < 0)
-			return (0);
+			return (-1);
 		else if (result > 2147483647)
 			return (-1);
 		result = result * 10 + (*(str++) - 48);
@@ -111,6 +111,7 @@ bool	initialize(t_data *init)
 		init->philos[i].pcontrol = &init->control[i];
 		init->philos[i].last_meal = 0;
 		init->philos[i].meal_times = 0;
+		init->philos[i].params = init->params;
 	}
 	return true;
 }
