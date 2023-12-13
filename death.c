@@ -6,23 +6,11 @@
 /*   By: sel-hano <sel-hano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 18:37:38 by sel-hano          #+#    #+#             */
-/*   Updated: 2023/12/13 18:38:45 by sel-hano         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:05:24 by sel-hano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-bool	is_alive(t_philos *philo)
-{
-	bool	state;
-
-	state = true;
-	pthread_mutex_lock(philo->pcontrol);
-	if (!philo->state)
-		state = false;
-	pthread_mutex_unlock(philo->pcontrol);
-	return (state);
-}
 
 void	kill_philo(void *philo)
 {

@@ -6,7 +6,7 @@
 /*   By: sel-hano <sel-hano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 18:37:34 by sel-hano          #+#    #+#             */
-/*   Updated: 2023/12/13 18:50:06 by sel-hano         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:04:31 by sel-hano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char *av[])
 		return (printf("Error : %s", ERR), 1);
 	if (!philosophers_init(&data, routine))
 		return (1);
-	controler(&data);
+	death_controler(&data);
 	i = 0;
 	if (params.philos_num == 1)
 		pthread_detach(*(data.threads));
