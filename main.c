@@ -12,11 +12,13 @@ int	main(int ac, char *av[])
 		return (1);
 	controler(&data);
 	i = 0;
-	while (i < params.philos_num)
+	if (params.philos_num == 1)
+		pthread_detach(*(data.threads));
+	while (i < params.philos_num && params.philos_num > 1)
 	{
 		if (pthread_join(data.threads[i], NULL))
 			return (1);
 		i++;
 	}
-	return (0);
+	return (free(data.philos), free(data.forks), free(data.control),free(data.threads), 0);
 }
