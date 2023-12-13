@@ -1,9 +1,16 @@
-#include "philosophers.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-hano <sel-hano@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/13 18:56:28 by sel-hano          #+#    #+#             */
+/*   Updated: 2023/12/13 18:57:37 by sel-hano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_isdigit(int nb)
-{
-	return (nb >= '0' && nb <= '9');
-}
+#include "philosophers.h"
 
 int	ft_atoi(const char *str)
 {
@@ -14,14 +21,11 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	while ((*str == 32) || (*str >= 9 && *str <= 13))
 		str++;
-	if ((*str == '-') && (ft_isdigit(*(char *)(str + 1))))
-	{
-		sign *= -1;
+	if (*str == '-')
+		sign = -1;
+	if (*str == '+' || *str == '-' && (*str >= '0' && *str <= '9'))
 		str++;
-	}
-	else if ((*str == '+') && (ft_isdigit(*(char *)(str + 1))))
-		str++;
-	while (ft_isdigit(*str))
+	while ((*str >= '0' && *str <= '9'))
 	{
 		if (result > 2147483648 && sign < 0)
 			return (-1);
@@ -64,6 +68,7 @@ int	parse_arguments(int ac, char *av[], t_params *params, t_data *to_fill)
 	}
 	return (false);
 }
+
 bool	init_locks(t_data *init)
 {
 	int	i;

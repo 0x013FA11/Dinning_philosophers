@@ -1,16 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-hano <sel-hano@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/13 18:37:10 by sel-hano          #+#    #+#             */
+/*   Updated: 2023/12/13 19:00:49 by sel-hano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
-
-bool	is_alive(t_philos *philo)
-{
-	bool	state;
-
-	state = true;
-	pthread_mutex_lock(philo->pcontrol);
-	if (!philo->state)
-		state = false;
-	pthread_mutex_unlock(philo->pcontrol);
-	return (state);
-}
 
 void	take_shopstick(void *philo)
 {
@@ -30,19 +30,6 @@ void	take_shopstick(void *philo)
 	printf("%lld %d %s\n", get_time(), ((t_philos *)philo)->id, SHOPSTICK);
 }
 
-void	usleeep(void *philo, long long ms)
-{
-	long long	start;
-
-	start = get_time();
-	while ((get_time() - start) < ms)
-	{
-		if (!is_alive((t_philos *)philo))
-			return ;
-		usleep(1000);
-	}
-}
-
 void	eat(void *philo)
 {
 	long long	start;
@@ -54,7 +41,8 @@ void	eat(void *philo)
 	if (((t_philos *)philo)->params->time_must_eat >= 0)
 	{
 		((t_philos *)philo)->meal_times++;
-		if (((t_philos *)philo)->meal_times == ((t_philos *)philo)->params->time_must_eat)
+		if (((t_philos *)philo)->meal_times
+			== ((t_philos *)philo)->params->time_must_eat)
 			((t_philos *)philo)->state = false;
 	}
 	pthread_mutex_unlock(((t_philos *)philo)->pcontrol);
@@ -70,6 +58,7 @@ void	sleep_and_think(void *philo)
 	printf("%lld %d %s\n", get_time(), ((t_philos *)philo)->id, THINK);
 	usleep(200);
 }
+
 void	actions(void *philo, void (*act)(void *))
 {
 	if (!is_alive((t_philos *)philo))
@@ -91,20 +80,4 @@ void	*routine(void *ptr)
 		actions(philos, sleep_and_think);
 	}
 	return (NULL);
-}
-
-bool	philosophers_init(t_data *philosophers, void *(*routine)(void *))
-{
-	int	i;
-
-	i = 0;
-	get_time();
-	while (i < philosophers->params->philos_num)
-	{
-		if (pthread_create(&philosophers->threads[i], NULL, routine,
-				&philosophers->philos[i]))
-			return (false);
-		i++;
-	}
-	return (true);
 }

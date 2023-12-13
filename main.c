@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-hano <sel-hano@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/13 18:37:34 by sel-hano          #+#    #+#             */
+/*   Updated: 2023/12/13 18:50:06 by sel-hano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 int	main(int ac, char *av[])
@@ -20,5 +32,6 @@ int	main(int ac, char *av[])
 			return (1);
 		i++;
 	}
-	return (free(data.philos), free(data.forks), free(data.control),free(data.threads), 0);
+	return (free(data.philos), free(data.forks), free(data.control),
+		free(data.threads), 0);
 }
