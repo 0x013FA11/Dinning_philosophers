@@ -1,5 +1,4 @@
 ## death.c
-## Explanation of death.c in your Dining Philosophers program:
 **kill_philo:**
 
 * Takes a `philo` pointer as input, representing a philosopher.
@@ -70,5 +69,80 @@
 - The program uses mutexes to ensure thread safety and prevent deadlock when accessing shared resources like forks and the control mutex.
 - The `get_time` function helps track the timing of various actions for each philosopher.
 - The `usleeep` function is a custom sleep function that takes a philosopher and a sleep duration as arguments, allowing for potential future modifications to individual philosopher behavior.
+## Makefile
 
-I hope this breakdown provides a clearer understanding of the memory management and data structure interactions in my program.
+This Makefile defines the build process for your Dining Philosophers program named "philo". Here's a breakdown of its contents:
+
+**Variables:**
+
+* `NAME`: Set to "philo", which is the final executable name.
+* `SRCS`: A list of source files (C files) used in the program.
+* `OBJS`: A list of generated object files compiled from the source files (calculated using `patsubst`).
+* `CC`: The compiler command to use (defaults to `cc`).
+* `CFLAGS`: Compilation flags used with the compiler. They include:
+    * `-pthread`: Enables pthread support for thread creation and synchronization.
+    * `-Wall`: Enables most compiler warnings.
+    * `-Wextra`: Enables additional, stricter warnings.
+    * `-Werror`: Treats all warnings as errors, causing the build to fail if any warnings are present.
+    * `-g`: Enables debug information generation in the compiled object files.
+    * `# -fsanitize=address,undefined`: Commented out line for potential future use with Address Sanitizer and Undefined Behavior Sanitizer (comment removal may require additional library installations).
+
+**Targets:**
+
+* `all`: Default target that builds the program.
+    * It first invokes the `$(OBJS)` target to ensure all object files are compiled.
+    * Then, it uses the compiled object files and the specified CFLAGS to link the final executable named "philo".
+* `%.o`: This is a pattern rule for compiling object files.
+    * It defines how to compile each source file (`%.c`) into an object file (`%.o`) using the `CC` and `CFLAGS` variables.
+    * The philosophers.h header file is also included during compilation.
+* `clean`: Removes all generated object files.
+* `fclean`: Performs a more thorough cleanup, removing both object and executable files.
+* `re`: Runs `fclean` followed by `all` to effectively rebuild the program from scratch.
+
+**Overall, this Makefile provides a clear and concise way to build and clean your Dining Philosophers program. It utilizes variables and pattern rules to automate the compilation and linking process, making it easier to maintain and update your project.**
+
+## utils2.c utils.c
+
+**Memory Management:**
+
+* This file dynamically allocates memory using `malloc` for various data structures:
+    * `t_data`: Stores pointers to other data structures and parameters.
+    * `t_params`: Holds program parameters like number of philosophers and timeouts.
+    * `t_philos`: Individual philosopher data, including ID, forks, control mutex, and state.
+    * `forks`: Array of mutexes representing individual forks.
+    * `control`: Array of mutexes for controlling access to philosopher data.
+* It's crucial to free allocated resources using functions like `clean` in the Makefile to avoid memory leaks.
+
+**Data Structure Access:**
+
+* `parse_arguments` accesses command line arguments and populates the `t_data` and `t_params` structures.
+* Individual philosopher data is accessed through pointer arithmetic within functions like `initialize`.
+* Mutexes are used to control access to shared resources like forks and control data.
+
+**Function Breakdown:**
+
+* **ft_atoi:** Converts a string to an integer, used for parsing arguments.
+* **check_params:** Validates program parameters, ensuring proper values.
+* **parse_arguments:** Parses command line arguments and initializes the program.
+    * Extracts parameter values using `ft_atoi` and checks validity with `check_params`.
+    * Sets up philosopher data structures and resources using `initialize`.
+* **init_locks:** Allocates and initializes mutexes for forks and control access.
+    * Uses `malloc` for memory allocation and `pthread_mutex_init` for initialization.
+* **initialize:** Sets up individual philosophers with IDs, forks, mutexes, and state.
+    * Relies on `init_locks` for resource allocation and `check_params` for valid parameters.
+
+**Interaction with other parts:**
+
+* `parse_arguments` is called by the `main` function to initialize the program.
+* Allocated resources like threads and mutexes are used by other functions like `routine` for philosopher behavior.
+* Initial philosopher state is set up here and accessed by functions like `death_controler` for monitoring and death detection.
+
+**Overall, `utils.c` plays a crucial role in setting up the program's foundation by:**
+
+* Managing memory allocation and deallocation.
+* Parsing user-provided parameters.
+* Initializing philosopher data structures and resources.
+* Providing thread-safe access to shared resources through mutexes.
+* Interacting with other parts of the program for proper execution.
+
+
