@@ -1,8 +1,5 @@
 ## death.c
 ## Explanation of death.c in your Dining Philosophers program:
-
-This file focuses on handling the death of philosophers in your program. Here's a breakdown of each function:
-
 **kill_philo:**
 
 * Takes a `philo` pointer as input, representing a philosopher.
@@ -38,10 +35,7 @@ This file focuses on handling the death of philosophers in your program. Here's 
 * This code uses mutexes to ensure thread safety when accessing and modifying shared data like philosopher states.
 * The code avoids printing explicit details about the cause of death, focusing on the event itself.
 
-**Overall, this code implements a simple and efficient mechanism for detecting and handling philosopher deaths in your program. It ensures all philosophers are notified of a death and become inactive, preventing further dining attempts and potential deadlock issues.**
-
-I hope this explanation clarifies the functionalities and safety aspects of the death.c file in your Dining Philosophers program. Feel free to ask if you have further questions or need more details on specific parts!
-
+**Overall, this code implements a simple and efficient mechanism for detecting and handling philosopher deaths in my program. It ensures all philosophers are notified of a death and become inactive, preventing further dining attempts and potential deadlock issues.**
 ## routine.c
 
 **1. Memory Management:**
